@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./ExpenseTracker.css";
 import ChooseDate from "./chooseDate";
-import ExpenseItems from "./ExpenseTable";
+import ExpenseTable from "./ExpenseTable";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 class ExpenseTracker extends Component {
   constructor(props) {
@@ -9,52 +11,48 @@ class ExpenseTracker extends Component {
 
     this.state = {
       expenses: [],
+      form: {
+        selectedDate: new Date(),
+      },
     };
 
     this.numberOfItems = 0;
-    this._inputType = "";
-    this._inputDescription = "";
-    this._inputAmount = "";
-    this._selectedDate = "";
 
     this.addExpense = this.addExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
-    this.dateSelected = new Date();
   }
 
   addExpense(e) {
     // console.log("in addExpense method");
     var itemArray = this.state.expenses;
-    console.log(this._selectedDate);
+    // console.log(this.state.form.selectedDate);
 
     if (
-      this._inputType.value !== "" &&
+      this._inputCategory.value !== "" &&
       this._inputDescription.value !== "" &&
+      this._inputVendor.value !== "" &&
       this._inputAmount.value !== "" &&
-      this._selectedDate !== ""
+      this.state.form.selectedDate !== ""
     ) {
-      console.log("inside if statement");
       this.numberOfItems++;
       itemArray.unshift({
         key: this.numberOfItems,
-        type: this._inputType.value,
+        date: this.state.form.selectedDate,
+        category: this._inputCategory.value,
         description: this._inputDescription.value,
+        vendor: this._inputVendor.value,
         amount: this._inputAmount.value,
       });
+      console.log(itemArray);
       this.setState({
         expenses: itemArray,
       });
-      this._inputType.value = "";
-      this._inputDescription.value = "";
-      this._inputAmount.value = "";
     }
-
+    // console.log(this.expenses);
     e.preventDefault();
-    console.log("made it");
   }
 
   deleteExpense(key) {
-    console.log("in deleteExpense method");
     var filteredItems = this.state.expenses.filter(function (item) {
       return item.key !== key;
     });
@@ -65,27 +63,51 @@ class ExpenseTracker extends Component {
   }
 
   render() {
+    console.log(this.state.form.selectedDate);
     return (
       <div>
         <div>
-          <form onSubmit={this.addExpense}>
-            <ChooseDate selected={(a) => (this._selectedDate = a)} />
-            <input
-              ref={(a) => (this._inputType = a)}
-              placeholder="enter type"
-            ></input>
+          <Form onSubmit={this.addExpense}>
+            <ChooseDate
+              selected={(a) =>
+                this.setState({
+                  form: { selectedDate: a },
+                })
+              }
+              selectedDate={this.state.form.selectedDate}
+            />
+            <select
+              ref={(a) => (this._inputCategory = a)}
+              id="expenseType"
+              name="expenseType"
+              defaultValue="work"
+            >
+              <option value="work">Work</option>
+              <option value="home">Home</option>
+              <option value="groceries">Groceries</option>
+              <option value="restaurants">Restaurants</option>
+              <option value="shopping">Shopping</option>
+              <option value="etc">Etc.</option>
+            </select>
             <input
               ref={(a) => (this._inputDescription = a)}
               placeholder="enter description"
             ></input>
             <input
+              ref={(a) => (this._inputVendor = a)}
+              placeholder="enter vendor"
+            ></input>
+            <input
               ref={(a) => (this._inputAmount = a)}
               placeholder="enter amount"
             ></input>
-            <button type="submit">Submit</button>
-          </form>
+            <Button type="submit">Submit</Button>
+          </Form>
         </div>
-        <ExpenseItems entries={this.state.expenses} />
+        <ExpenseTable
+          entries={this.state.expenses}
+          delete={this.deleteExpense}
+        />
       </div>
     );
   }

@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function ChooseDate() {
-  const [startDate, setStartDate] = useState(new Date());
+export default function ChooseDate(props) {
   var chosenDate = (
-    <DatePicker
-      selected={startDate}
-      onChange={(date: Date) => setStartDate(date)}
-    />
+    <DatePicker selected={props.selectedDate} onChange={props.selected} />
   );
 
   //   console.log(chosenDate);
