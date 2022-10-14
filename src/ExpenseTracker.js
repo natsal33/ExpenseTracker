@@ -3,6 +3,8 @@ import "./ExpenseTracker.css";
 import ChooseDate from "./chooseDate";
 import ExpenseTable from "./ExpenseTable";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 
 class ExpenseTracker extends Component {
@@ -68,40 +70,54 @@ class ExpenseTracker extends Component {
       <div>
         <div>
           <Form onSubmit={this.addExpense}>
-            <ChooseDate
-              selected={(a) =>
-                this.setState({
-                  form: { selectedDate: a },
-                })
-              }
-              selectedDate={this.state.form.selectedDate}
-            />
-            <select
-              ref={(a) => (this._inputCategory = a)}
-              id="expenseType"
-              name="expenseType"
-              defaultValue="work"
-            >
-              <option value="work">Work</option>
-              <option value="home">Home</option>
-              <option value="groceries">Groceries</option>
-              <option value="restaurants">Restaurants</option>
-              <option value="shopping">Shopping</option>
-              <option value="etc">Etc.</option>
-            </select>
-            <input
-              ref={(a) => (this._inputDescription = a)}
-              placeholder="enter description"
-            ></input>
-            <input
-              ref={(a) => (this._inputVendor = a)}
-              placeholder="enter vendor"
-            ></input>
-            <input
-              ref={(a) => (this._inputAmount = a)}
-              placeholder="enter amount"
-            ></input>
-            <Button type="submit">Submit</Button>
+            <Row>
+              <Col>
+                <ChooseDate
+                  selected={(a) =>
+                    this.setState({
+                      form: { selectedDate: a },
+                    })
+                  }
+                  selectedDate={this.state.form.selectedDate}
+                />
+              </Col>
+              <Col>
+                <Form.Select
+                  ref={(a) => (this._inputCategory = a)}
+                  id="expenseType"
+                  name="expenseType"
+                  defaultValue="work"
+                >
+                  <option value="work">Work</option>
+                  <option value="home">Home</option>
+                  <option value="groceries">Groceries</option>
+                  <option value="restaurants">Restaurants</option>
+                  <option value="shopping">Shopping</option>
+                  <option value="etc">Etc.</option>
+                </Form.Select>
+              </Col>
+              <Col>
+                <Form.Control
+                  ref={(a) => (this._inputDescription = a)}
+                  placeholder="enter description"
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Form.Control
+                  ref={(a) => (this._inputVendor = a)}
+                  placeholder="enter vendor"
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Form.Control
+                  ref={(a) => (this._inputAmount = a)}
+                  placeholder="enter amount"
+                ></Form.Control>
+              </Col>
+              <Col>
+                <Button type="submit">Submit</Button>
+              </Col>
+            </Row>
           </Form>
         </div>
         <ExpenseTable
