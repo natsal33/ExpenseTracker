@@ -71,17 +71,18 @@ class ExpenseTracker extends Component {
         <div>
           <Form onSubmit={this.addExpense}>
             <Row>
-              <Col>
-                <ChooseDate
+              <Col xs={12} sm={2}>
+                {/* <ChooseDate
                   selected={(a) =>
                     this.setState({
                       form: { selectedDate: a },
                     })
                   }
                   selectedDate={this.state.form.selectedDate}
-                />
+                /> */}
+                <Form.Control type="date"></Form.Control>
               </Col>
-              <Col>
+              <Col xs={12} sm={4} className="py-2">
                 <Form.Select
                   ref={(a) => (this._inputCategory = a)}
                   id="expenseType"
@@ -96,25 +97,25 @@ class ExpenseTracker extends Component {
                   <option value="etc">Etc.</option>
                 </Form.Select>
               </Col>
-              <Col>
+              <Col xs={12}>
                 <Form.Control
                   ref={(a) => (this._inputDescription = a)}
                   placeholder="enter description"
                 ></Form.Control>
               </Col>
-              <Col>
+              <Col xs={12}>
                 <Form.Control
                   ref={(a) => (this._inputVendor = a)}
                   placeholder="enter vendor"
                 ></Form.Control>
               </Col>
-              <Col>
+              <Col xs={12}>
                 <Form.Control
                   ref={(a) => (this._inputAmount = a)}
                   placeholder="enter amount"
                 ></Form.Control>
               </Col>
-              <Col>
+              <Col xs={12}>
                 <Button type="submit">Submit</Button>
               </Col>
             </Row>
