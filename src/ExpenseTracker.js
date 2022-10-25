@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./ExpenseTracker.css";
-import ChooseDate from "./chooseDate";
 import ExpenseTable from "./ExpenseTable";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -67,11 +66,11 @@ class ExpenseTracker extends Component {
   render() {
     console.log(this.state.form.selectedDate);
     return (
-      <div>
+      <div className="bod">
         <div>
           <Form onSubmit={this.addExpense}>
             <Row>
-              <Col xs={12} sm={2}>
+              <Col>
                 {/* <ChooseDate
                   selected={(a) =>
                     this.setState({
@@ -82,7 +81,7 @@ class ExpenseTracker extends Component {
                 /> */}
                 <Form.Control type="date"></Form.Control>
               </Col>
-              <Col xs={12} sm={4} className="py-2">
+              <Col className="py-2">
                 <Form.Select
                   ref={(a) => (this._inputCategory = a)}
                   id="expenseType"
@@ -97,25 +96,25 @@ class ExpenseTracker extends Component {
                   <option value="etc">Etc.</option>
                 </Form.Select>
               </Col>
-              <Col xs={12}>
+              <Col>
                 <Form.Control
                   ref={(a) => (this._inputDescription = a)}
                   placeholder="enter description"
                 ></Form.Control>
               </Col>
-              <Col xs={12}>
+              <Col>
                 <Form.Control
                   ref={(a) => (this._inputVendor = a)}
                   placeholder="enter vendor"
                 ></Form.Control>
               </Col>
-              <Col xs={12}>
+              <Col>
                 <Form.Control
                   ref={(a) => (this._inputAmount = a)}
                   placeholder="enter amount"
                 ></Form.Control>
               </Col>
-              <Col xs={12}>
+              <Col>
                 <Button type="submit">Submit</Button>
               </Col>
             </Row>

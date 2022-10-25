@@ -1,4 +1,4 @@
-body {
+.bod {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -7,8 +7,5 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 50px;
   font-family: sans-serif;
-}
-
-Form {
-  /* display: flex; */
+  background-color: lavender;
 }
