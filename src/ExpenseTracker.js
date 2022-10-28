@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import Badge from "react-bootstrap/Badge";
 
 class ExpenseTracker extends Component {
   expenseData;
@@ -85,7 +86,12 @@ class ExpenseTracker extends Component {
     // console.log(this.state.form.selectedDate);
     return (
       <div className="bod">
-        <div>
+        <h1 class="d-flex p-2 justify-content-center">
+          <Badge bg="light" text="dark">
+            Expense Tracker
+          </Badge>
+        </h1>
+        <div class="p-2 mb-4">
           <Form onSubmit={this.addExpense}>
             <Row>
               <Col>

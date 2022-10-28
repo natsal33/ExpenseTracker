@@ -32,19 +32,21 @@ class ExpenseTable extends Component {
     var expenseTableItems = expenseEntries.map(this.createExpense);
 
     return (
-      <Table striped>
-        <caption>Expense Log</caption>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Vendor</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>{expenseTableItems}</tbody>
-      </Table>
+      <div>
+        <h4 class="d-flex justify-content-center p-2">Expense Log </h4>
+        <Table striped class="d-flex justify-content-center">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Vendor</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>{expenseTableItems}</tbody>
+        </Table>
+      </div>
     );
   }
 }

@@ -4,6 +4,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import ExpenseTracker from "./ExpenseTracker.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+// import "./custom.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
