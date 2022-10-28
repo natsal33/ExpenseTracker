@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 
 class ExpenseTracker extends Component {
+  expenseData;
   constructor(props) {
     super(props);
 
@@ -17,10 +18,23 @@ class ExpenseTracker extends Component {
       },
     };
 
-    this.numberOfItems = 0;
-
     this.addExpense = this.addExpense.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
+  }
+
+  componentDidMount() {
+    this.expenseData = JSON.parse(localStorage.getItem("storedExpenses"));
+
+    if (localStorage.getItem("storedExpenses")) {
+      this.setState({
+        expenses: this.expenseData,
+      });
+    }
+  }
+
+  updateLocalStorage(newExpenseArray) {
+    localStorage.clear();
+    localStorage.setItem("storedExpenses", JSON.stringify(newExpenseArray));
   }
 
   addExpense(e) {
@@ -35,24 +49,26 @@ class ExpenseTracker extends Component {
       this._inputAmount.value !== "" &&
       this.state.form.selectedDate !== ""
     ) {
-      this.numberOfItems++;
       itemArray.unshift({
-        key: this.numberOfItems,
-        date: this.state.form.selectedDate,
+        key: Date.now(),
+        date: "date",
         category: this._inputCategory.value,
         description: this._inputDescription.value,
         vendor: this._inputVendor.value,
         amount: this._inputAmount.value,
       });
-      console.log(itemArray);
+      // console.log(itemArray);
       this.setState({
         expenses: itemArray,
+        form: {
+          selectedDate: new Date(),
+        },
       });
     }
-    // console.log(this.expenses);
+    this.updateLocalStorage(itemArray);
     e.preventDefault();
   }
-
+  //
   deleteExpense(key) {
     var filteredItems = this.state.expenses.filter(function (item) {
       return item.key !== key;
@@ -61,27 +77,21 @@ class ExpenseTracker extends Component {
     this.setState({
       expenses: filteredItems,
     });
+
+    this.updateLocalStorage(filteredItems);
   }
 
   render() {
-    console.log(this.state.form.selectedDate);
+    // console.log(this.state.form.selectedDate);
     return (
       <div className="bod">
         <div>
           <Form onSubmit={this.addExpense}>
             <Row>
               <Col>
-                {/* <ChooseDate
-                  selected={(a) =>
-                    this.setState({
-                      form: { selectedDate: a },
-                    })
-                  }
-                  selectedDate={this.state.form.selectedDate}
-                /> */}
                 <Form.Control type="date"></Form.Control>
               </Col>
-              <Col className="py-2">
+              <Col>
                 <Form.Select
                   ref={(a) => (this._inputCategory = a)}
                   id="expenseType"

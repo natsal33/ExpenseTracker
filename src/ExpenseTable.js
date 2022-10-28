@@ -1,4 +1,3 @@
-import { isCursorAtEnd } from "@testing-library/user-event/dist/utils";
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 
@@ -19,7 +18,7 @@ class ExpenseTable extends Component {
   createExpense(item) {
     return (
       <tr onClick={() => this.delete(item.key)} key={item.key}>
-        <td>{item.date.toLocaleDateString()}</td>
+        <td>{item.date}</td>
         <td>{item.category}</td>
         <td>{item.description}</td>
         <td>{item.vendor}</td>
