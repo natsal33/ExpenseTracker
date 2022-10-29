@@ -15,7 +15,7 @@ class ExpenseTracker extends Component {
     this.state = {
       expenses: [],
       form: {
-        selectedDate: new Date(),
+        selectedDate: "x",
       },
     };
 
@@ -52,7 +52,7 @@ class ExpenseTracker extends Component {
     ) {
       itemArray.unshift({
         key: Date.now(),
-        date: "date",
+        date: this.state.form.selectedDate.toLocaleDateString(),
         category: this._inputCategory.value,
         description: this._inputDescription.value,
         vendor: this._inputVendor.value,
@@ -83,21 +83,32 @@ class ExpenseTracker extends Component {
   }
 
   render() {
-    // console.log(this.state.form.selectedDate);
     return (
       <div className="bod">
-        <h1 class="d-flex p-2 justify-content-center">
+        <h1 className="d-flex p-2 justify-content-center">
           <Badge bg="light" text="dark">
             Expense Tracker
           </Badge>
         </h1>
-        <div class="p-2 mb-4">
+        <div className="p-2 mb-4 d-flex justify-content-center">
           <Form onSubmit={this.addExpense}>
             <Row>
-              <Col>
-                <Form.Control type="date"></Form.Control>
+              <Col lg="2" md="4" sm="4">
+                <Form.Control
+                  type="date"
+                  defaultValue={"2022-10-28"}
+                  // onChange={(e) => {
+                  //   console.log(e.target.value);
+                  //   this.setState({
+                  //     form: {
+                  //       selectedDate: e.target.value,
+                  //     },
+                  //   });
+                  //   e.preventDefault();
+                  // }}
+                ></Form.Control>
               </Col>
-              <Col>
+              <Col lg="2" md="4" sm="4">
                 <Form.Select
                   ref={(a) => (this._inputCategory = a)}
                   id="expenseType"
@@ -112,25 +123,25 @@ class ExpenseTracker extends Component {
                   <option value="etc">Etc.</option>
                 </Form.Select>
               </Col>
-              <Col>
-                <Form.Control
-                  ref={(a) => (this._inputDescription = a)}
-                  placeholder="enter description"
-                ></Form.Control>
-              </Col>
-              <Col>
+              <Col lg="2" md="4" sm="4">
                 <Form.Control
                   ref={(a) => (this._inputVendor = a)}
-                  placeholder="enter vendor"
+                  placeholder="vendor"
                 ></Form.Control>
               </Col>
-              <Col>
+              <Col lg="3" md="8">
+                <Form.Control
+                  ref={(a) => (this._inputDescription = a)}
+                  placeholder="description"
+                ></Form.Control>
+              </Col>
+              <Col lg="2" md="4">
                 <Form.Control
                   ref={(a) => (this._inputAmount = a)}
-                  placeholder="enter amount"
+                  placeholder="amount"
                 ></Form.Control>
               </Col>
-              <Col>
+              <Col lg="1">
                 <Button type="submit">Submit</Button>
               </Col>
             </Row>
