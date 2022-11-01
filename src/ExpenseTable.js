@@ -34,7 +34,7 @@ class ExpenseTable extends Component {
     return (
       <div>
         <h4 className="d-flex justify-content-center p-2">Expense Log </h4>
-        <Table striped className="justify-content-left">
+        <Table striped className="justify-content-center p-2">
           <thead>
             <tr>
               <th>Date</th>

@@ -12,14 +12,24 @@ class ExpenseTracker extends Component {
   constructor(props) {
     super(props);
 
+    var dateObj = new Date();
+    var todaysDate =
+      dateObj.getFullYear() + "-" + dateObj.getMonth() + "-" + dateObj.getDay();
+
     this.state = {
       expenses: [],
       form: {
-        selectedDate: "x",
+        selectedDate: todaysDate,
+        _inputCategory: "",
+        _inputDescription: "",
+        _inputVendor: "",
+        _inputAmount: "",
       },
     };
 
-    this.addExpense = this.addExpense.bind(this);
+    this.datePicker = React.createRef();
+
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
   }
 
@@ -38,32 +48,28 @@ class ExpenseTracker extends Component {
     localStorage.setItem("storedExpenses", JSON.stringify(newExpenseArray));
   }
 
-  addExpense(e) {
-    // console.log("in addExpense method");
+  handleSubmit(e) {
     var itemArray = this.state.expenses;
-    // console.log(this.state.form.selectedDate);
+    console.log(this.datePicker.current.value);
+    console.log(this.state.form.selectedDate);
 
     if (
-      this._inputCategory.value !== "" &&
-      this._inputDescription.value !== "" &&
-      this._inputVendor.value !== "" &&
-      this._inputAmount.value !== "" &&
-      this.state.form.selectedDate !== ""
+      this.state.form._inputDescription !== "" &&
+      this.state.form._inputVendor !== "" &&
+      this.state.form._inputAmount !== ""
     ) {
+      console.log("made it into if statement!");
       itemArray.unshift({
         key: Date.now(),
-        date: this.state.form.selectedDate.toLocaleDateString(),
-        category: this._inputCategory.value,
-        description: this._inputDescription.value,
-        vendor: this._inputVendor.value,
-        amount: this._inputAmount.value,
+        date: "date",
+        category: this.state.form._inputCategory,
+        description: this.state.form._inputDescription,
+        vendor: this.state.form._inputVendor,
+        amount: this.state.form._inputAmount,
       });
       // console.log(itemArray);
       this.setState({
         expenses: itemArray,
-        form: {
-          selectedDate: new Date(),
-        },
       });
     }
     this.updateLocalStorage(itemArray);
@@ -90,30 +96,22 @@ class ExpenseTracker extends Component {
             Expense Tracker
           </Badge>
         </h1>
-        <div className="p-2 mb-4 d-flex justify-content-center">
-          <Form onSubmit={this.addExpense}>
+        <div className="p-2 mb-4">
+          <Form onSubmit={this.handleSubmit}>
             <Row>
-              <Col lg="2" md="4" sm="4">
+              <Col>
                 <Form.Control
                   type="date"
-                  defaultValue={"2022-10-28"}
-                  // onChange={(e) => {
-                  //   console.log(e.target.value);
-                  //   this.setState({
-                  //     form: {
-                  //       selectedDate: e.target.value,
-                  //     },
-                  //   });
-                  //   e.preventDefault();
-                  // }}
+                  defaultValue={this.state.form.selectedDate}
+                  ref={this.datePicker}
                 ></Form.Control>
               </Col>
               <Col lg="2" md="4" sm="4">
                 <Form.Select
-                  ref={(a) => (this._inputCategory = a)}
+                  ref={(a) => this.state.form.setState({ _inputType: a })}
                   id="expenseType"
                   name="expenseType"
-                  defaultValue="work"
+                  defaultValue="home"
                 >
                   <option value="work">Work</option>
                   <option value="home">Home</option>
@@ -125,20 +123,22 @@ class ExpenseTracker extends Component {
               </Col>
               <Col lg="2" md="4" sm="4">
                 <Form.Control
-                  ref={(a) => (this._inputVendor = a)}
-                  placeholder="vendor"
+                  ref={(a) =>
+                    this.state.form.setState({ _inputDescription: a })
+                  }
+                  placeholder="enter description"
                 ></Form.Control>
               </Col>
               <Col lg="3" md="8">
                 <Form.Control
-                  ref={(a) => (this._inputDescription = a)}
-                  placeholder="description"
+                  ref={(a) => this.state.form.setState({ _inputVendor: a })}
+                  placeholder="enter vendor"
                 ></Form.Control>
               </Col>
               <Col lg="2" md="4">
                 <Form.Control
-                  ref={(a) => (this._inputAmount = a)}
-                  placeholder="amount"
+                  ref={(a) => this.state.form.setState({ _inputAmount: a })}
+                  placeholder="enter amount"
                 ></Form.Control>
               </Col>
               <Col lg="1">
