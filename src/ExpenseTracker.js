@@ -19,11 +19,15 @@ class ExpenseTracker extends Component {
     this.state = {
       expenses: [],
       form: {
+<<<<<<< HEAD
+        selectedDate: "x",
+=======
         selectedDate: todaysDate,
         _inputCategory: "",
         _inputDescription: "",
         _inputVendor: "",
         _inputAmount: "",
+>>>>>>> withoutDate
       },
     };
 
@@ -108,7 +112,7 @@ class ExpenseTracker extends Component {
               </Col>
               <Col lg="2" md="4" sm="4">
                 <Form.Select
-                  ref={(a) => this.state.form.setState({ _inputType: a })}
+                  ref={(a) => this.setState({form:{ _inputType: a }})}
                   id="expenseType"
                   name="expenseType"
                   defaultValue="home"
@@ -124,20 +128,20 @@ class ExpenseTracker extends Component {
               <Col lg="2" md="4" sm="4">
                 <Form.Control
                   ref={(a) =>
-                    this.state.form.setState({ _inputDescription: a })
+                    this.setState({form:{ _inputDescription: a }})
                   }
                   placeholder="enter description"
                 ></Form.Control>
               </Col>
               <Col lg="3" md="8">
                 <Form.Control
-                  ref={(a) => this.state.form.setState({ _inputVendor: a })}
+                  ref={(a) => this.setState({form:{ _inputVendor: a }})}
                   placeholder="enter vendor"
                 ></Form.Control>
               </Col>
               <Col lg="2" md="4">
                 <Form.Control
-                  ref={(a) => this.state.form.setState({ _inputAmount: a })}
+                  ref={(a) => this.setState({form: { _inputAmount: a }})}
                   placeholder="enter amount"
                 ></Form.Control>
               </Col>
