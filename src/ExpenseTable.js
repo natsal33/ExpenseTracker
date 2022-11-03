@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 class ExpenseTable extends Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class ExpenseTable extends Component {
         <td>{item.category}</td>
         <td>{item.description}</td>
         <td>{item.vendor}</td>
-        <td>{item.amount}</td>
+        <td>${item.amount}</td>
       </tr>
     );
   }
@@ -32,20 +34,24 @@ class ExpenseTable extends Component {
     var expenseTableItems = expenseEntries.map(this.createExpense);
 
     return (
-      <div>
-        <h4 className="d-flex justify-content-center p-2">Expense Log </h4>
-        <Table striped className="justify-content-center p-2">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th>Vendor</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>{expenseTableItems}</tbody>
-        </Table>
+      <div className="d-flex justify-content-center">
+        <Row>
+          <Col sm="12" md="12" lg="12">
+            <h4 className="d-flex justify-content-center p-2">Expense Log </h4>
+          </Col>
+          <Table striped className="justify-content-center p-2">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Vendor</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>{expenseTableItems}</tbody>
+          </Table>
+        </Row>
       </div>
     );
   }

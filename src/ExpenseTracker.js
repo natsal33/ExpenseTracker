@@ -12,76 +12,90 @@ class ExpenseTracker extends Component {
   constructor(props) {
     super(props);
 
-    var dateObj = new Date();
-    var todaysDate =
-      dateObj.getFullYear() + "-" + dateObj.getMonth() + "-" + dateObj.getDay();
-
     this.state = {
       expenses: [],
-      form: {
-<<<<<<< HEAD
-        selectedDate: "x",
-=======
-        selectedDate: todaysDate,
-        _inputCategory: "",
-        _inputDescription: "",
-        _inputVendor: "",
-        _inputAmount: "",
->>>>>>> withoutDate
+      inputs: {
+        defaultDate: "",
+        defaultCategory: "home",
+        defaultDescription: "",
+        defaultVendor: "",
+        defaultAmount: 100,
       },
     };
 
     this.datePicker = React.createRef();
+    this.inputCategorySelector = React.createRef();
+    this.inputDescription = React.createRef();
+    this.inputVendor = React.createRef();
+    this.inputAmount = React.createRef();
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteExpense = this.deleteExpense.bind(this);
+    this.getTodaysDate = this.getTodaysDate.bind(this);
+    this.updateExpensesLocalStorage =
+      this.updateExpensesLocalStorage.bind(this);
+    this.updateInputLocalStorage = this.updateInputLocalStorage.bind(this);
   }
 
   componentDidMount() {
-    this.expenseData = JSON.parse(localStorage.getItem("storedExpenses"));
-
     if (localStorage.getItem("storedExpenses")) {
+      this.expenseData = JSON.parse(localStorage.getItem("storedExpenses"));
+
       this.setState({
         expenses: this.expenseData,
       });
     }
   }
 
-  updateLocalStorage(newExpenseArray) {
-    localStorage.clear();
+  getTodaysDate() {
+    var dateObj = new Date();
+    return (
+      dateObj.getFullYear() +
+      "-" +
+      (dateObj.getMonth() + 1) +
+      "-0" +
+      dateObj.getDate()
+    );
+  }
+
+  updateExpensesLocalStorage(newExpenseArray) {
     localStorage.setItem("storedExpenses", JSON.stringify(newExpenseArray));
   }
 
+  updateInputLocalStorage(inputType, inputString) {
+    localStorage.setItem(inputType, JSON.stringify(inputString));
+
+    console.log(JSON.parse(localStorage.getItem("amount")));
+  }
+
   handleSubmit(e) {
-    var itemArray = this.state.expenses;
-    console.log(this.datePicker.current.value);
-    console.log(this.state.form.selectedDate);
+    var itemArray = [...this.state.expenses];
 
     if (
-      this.state.form._inputDescription !== "" &&
-      this.state.form._inputVendor !== "" &&
-      this.state.form._inputAmount !== ""
+      this.inputDescription.current.value !== "" &&
+      this.inputVendor.current.value !== "" &&
+      this.inputAmount.current.value !== ""
     ) {
-      console.log("made it into if statement!");
       itemArray.unshift({
         key: Date.now(),
-        date: "date",
-        category: this.state.form._inputCategory,
-        description: this.state.form._inputDescription,
-        vendor: this.state.form._inputVendor,
-        amount: this.state.form._inputAmount,
+        date: this.datePicker.current.value,
+        category: this.inputCategorySelector.current.value,
+        description: this.inputDescription.current.value,
+        vendor: this.inputVendor.current.value,
+        amount: parseFloat(this.inputAmount.current.value),
       });
       // console.log(itemArray);
       this.setState({
         expenses: itemArray,
       });
     }
-    this.updateLocalStorage(itemArray);
+    this.updateExpensesLocalStorage(itemArray);
     e.preventDefault();
   }
   //
   deleteExpense(key) {
-    var filteredItems = this.state.expenses.filter(function (item) {
+    var itemArray = [...this.state.expenses];
+    var filteredItems = itemArray.filter(function (item) {
       return item.key !== key;
     });
 
@@ -89,7 +103,7 @@ class ExpenseTracker extends Component {
       expenses: filteredItems,
     });
 
-    this.updateLocalStorage(filteredItems);
+    this.updateExpensesLocalStorage(filteredItems);
   }
 
   render() {
@@ -102,20 +116,36 @@ class ExpenseTracker extends Component {
         </h1>
         <div className="p-2 mb-4">
           <Form onSubmit={this.handleSubmit}>
-            <Row>
-              <Col>
+            <Row className="d-flex justify-content-evenly">
+              <Col
+                lg="2"
+                md="3"
+                sm="4"
+                className="d-flex justify-content-center"
+              >
                 <Form.Control
                   type="date"
-                  defaultValue={this.state.form.selectedDate}
+                  defaultValue={this.getTodaysDate()}
+                  onChange={(e) =>
+                    this.updateInputLocalStorage("date", e.target.value)
+                  }
                   ref={this.datePicker}
                 ></Form.Control>
               </Col>
-              <Col lg="2" md="4" sm="4">
+              <Col
+                lg="2"
+                md="4"
+                sm="4"
+                className="d-flex justify-content-center"
+              >
                 <Form.Select
-                  ref={(a) => this.setState({form:{ _inputType: a }})}
-                  id="expenseType"
-                  name="expenseType"
-                  defaultValue="home"
+                  ref={this.inputCategorySelector}
+                  id="expenseCategory"
+                  name="expenseCategory"
+                  onChange={(e) =>
+                    this.updateInputLocalStorage("category", e.target.value)
+                  }
+                  defaultValue={JSON.parse(localStorage.getItem("category"))}
                 >
                   <option value="work">Work</option>
                   <option value="home">Home</option>
@@ -125,27 +155,59 @@ class ExpenseTracker extends Component {
                   <option value="etc">Etc.</option>
                 </Form.Select>
               </Col>
-              <Col lg="2" md="4" sm="4">
+              <Col
+                lg="2"
+                md="5"
+                sm="4"
+                className="d-flex justify-content-center"
+              >
                 <Form.Control
-                  ref={(a) =>
-                    this.setState({form:{ _inputDescription: a }})
+                  ref={this.inputVendor}
+                  onChange={(e) =>
+                    this.updateInputLocalStorage("vendor", e.target.value)
                   }
-                  placeholder="enter description"
-                ></Form.Control>
-              </Col>
-              <Col lg="3" md="8">
-                <Form.Control
-                  ref={(a) => this.setState({form:{ _inputVendor: a }})}
+                  defaultValue={JSON.parse(localStorage.getItem("vendor"))}
                   placeholder="enter vendor"
                 ></Form.Control>
               </Col>
-              <Col lg="2" md="4">
+              <Col
+                lg="3"
+                md="6"
+                sm="12"
+                className="d-flex justify-content-center"
+              >
                 <Form.Control
-                  ref={(a) => this.setState({form: { _inputAmount: a }})}
+                  ref={this.inputDescription}
+                  onChange={(e) =>
+                    this.updateInputLocalStorage("description", e.target.value)
+                  }
+                  defaultValue={JSON.parse(localStorage.getItem("description"))}
+                  placeholder="enter description"
+                ></Form.Control>
+              </Col>
+              <Col
+                lg="2"
+                md="4"
+                sm="4"
+                className="d-flex justify-content-center"
+              >
+                <Form.Control
+                  ref={this.inputAmount}
+                  onChange={(e) =>
+                    this.updateInputLocalStorage("amount", e.target.value)
+                  }
+                  defaultValue={parseFloat(
+                    JSON.parse(localStorage.getItem("amount"))
+                  )}
                   placeholder="enter amount"
                 ></Form.Control>
               </Col>
-              <Col lg="1">
+              <Col
+                lg="1"
+                md="2"
+                sm="4"
+                className="d-flex justify-content-center"
+              >
                 <Button type="submit">Submit</Button>
               </Col>
             </Row>
