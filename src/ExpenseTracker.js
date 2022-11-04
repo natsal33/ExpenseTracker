@@ -14,13 +14,6 @@ class ExpenseTracker extends Component {
 
     this.state = {
       expenses: [],
-      inputs: {
-        defaultDate: "",
-        defaultCategory: "home",
-        defaultDescription: "",
-        defaultVendor: "",
-        defaultAmount: 100,
-      },
     };
 
     this.datePicker = React.createRef();
@@ -64,8 +57,6 @@ class ExpenseTracker extends Component {
 
   updateInputLocalStorage(inputType, inputString) {
     localStorage.setItem(inputType, JSON.stringify(inputString));
-
-    console.log(JSON.parse(localStorage.getItem("amount")));
   }
 
   handleSubmit(e) {
@@ -82,9 +73,8 @@ class ExpenseTracker extends Component {
         category: this.inputCategorySelector.current.value,
         description: this.inputDescription.current.value,
         vendor: this.inputVendor.current.value,
-        amount: parseFloat(this.inputAmount.current.value),
+        amount: this.inputAmount.current.value,
       });
-      // console.log(itemArray);
       this.setState({
         expenses: itemArray,
       });
@@ -196,9 +186,7 @@ class ExpenseTracker extends Component {
                   onChange={(e) =>
                     this.updateInputLocalStorage("amount", e.target.value)
                   }
-                  defaultValue={parseFloat(
-                    JSON.parse(localStorage.getItem("amount"))
-                  )}
+                  defaultValue={JSON.parse(localStorage.getItem("amount"))}
                   placeholder="enter amount"
                 ></Form.Control>
               </Col>
