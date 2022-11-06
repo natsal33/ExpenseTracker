@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 class ExpenseTable extends Component {
   constructor(props) {
@@ -19,12 +20,22 @@ class ExpenseTable extends Component {
 
   createExpense(item) {
     return (
-      <tr onClick={() => this.delete(item.key)} key={item.key}>
+      <tr>
         <td>{item.date}</td>
         <td>{item.category}</td>
         <td>{item.description}</td>
         <td>{item.vendor}</td>
         <td>${item.amount}</td>
+        <td>
+          <Button
+            variant="outline-light"
+            size="sm"
+            onClick={() => this.delete(item.key)}
+            key={item.key}
+          >
+            X
+          </Button>
+        </td>
       </tr>
     );
   }
