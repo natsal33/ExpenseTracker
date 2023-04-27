@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import ExpenseTracker from "./ExpenseTracker.js";
+import App from "./App.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./custom.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ExpenseTracker />
+    <App />
   </React.StrictMode>
 );
 

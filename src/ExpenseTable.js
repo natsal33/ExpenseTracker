@@ -11,7 +11,14 @@ class ExpenseTable extends Component {
     this.createExpense = this.createExpense.bind(this);
     this.delete = this.delete.bind(this);
 
+    this.expenseTotal = React.createRef();
+    this.expenseTotal.current = Number(0);
     this._selectedDate = new Date();
+    this.itemKey = 0;
+  }
+
+  componentDidUpdate() {
+    this.expenseTotal.current = Number(0);
   }
 
   delete(key) {
@@ -19,8 +26,10 @@ class ExpenseTable extends Component {
   }
 
   createExpense(item) {
+    this.itemKey++;
+    this.expenseTotal.current += Number(item.amount);
     return (
-      <tr>
+      <tr key={this.itemKey}>
         <td>{item.date}</td>
         <td>{item.category}</td>
         <td>{item.description}</td>
@@ -28,7 +37,7 @@ class ExpenseTable extends Component {
         <td>${item.amount}</td>
         <td>
           <Button
-            variant="outline-light"
+            variant="danger"
             size="sm"
             onClick={() => this.delete(item.key)}
             key={item.key}
@@ -55,12 +64,37 @@ class ExpenseTable extends Component {
               <tr>
                 <th>Date</th>
                 <th>Category</th>
-                <th>Description</th>
                 <th>Vendor</th>
+                <th>Description</th>
                 <th>Amount</th>
               </tr>
             </thead>
-            <tbody>{expenseTableItems}</tbody>
+            {expenseTableItems.length === 0 ? (
+              <tfoot
+                className="text-center"
+                style={{
+                  fontWeight: "700",
+                  fontSize: "16pt",
+                }}
+              >
+                <td></td>
+                <td></td>
+                <td> Enter your first expense to get started!</td>
+                <td></td>
+                <td></td>
+              </tfoot>
+            ) : (
+              <tbody>{expenseTableItems}</tbody>
+            )}
+            <tfoot style={{ fontWeight: "700" }}>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td>${Math.round(this.expenseTotal.current * 100) / 100}</td>
+              </tr>
+            </tfoot>
           </Table>
         </Row>
       </div>
